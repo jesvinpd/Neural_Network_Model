@@ -1,0 +1,9 @@
+activation function, weight, three to one neron connection in first neuron layer change checking on training
+3 compnt to 3 compnt vctor => 3 or 1 compnt to 1 compnt vectr
+arithmetic series, 
+linear,non-linear     ||logistic||
+
+
+maniptn:  model.h, unit_test.cpp , training.h
+
+back propagation

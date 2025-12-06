@@ -9,6 +9,7 @@ class label
 	public:
 		std::list<double> lbl;
 		
+
 		label ()
 		{
 		

@@ -1,45 +1,55 @@
 #include <chrono>
 #include <unistd.h>
+#include <list>
+#include <iostream>
 
 #include "data_set.h"
 #include "training.h"
 #include "model.h"
 
+// Define a structure to hold input and label lists
+struct Dataset
+{
+    std::list<double> input;
+    std::list<double> label;
+};
+
 int main()
 {
     data_set dts = data_set();
-
     model mdl = model();
-
     mdl.set();
 
-    // nn1.print_weight ();
+    // Create a list of datasets
+    std::list<Dataset> datasets = {
+        {{4, 10, 16}, {22, 28, 34}},
+        {{1, 2, 3}, {6, 8, 10}},
+        {{5, 7, 9}, {15, 21, 27}}
+        // Add more datasets as needed
+    };
 
-    // std::list<double> _input = {2974.600000, -1919.200000, 5257.800000};
-
-    // std::list<double> _label = {9537.800000, -0.600000, -4277.600000};
-
-    std::list<double> _input = {4, 10, 16};
-    std::list<double> _label = {22, 28, 34};
-
-    double delta = 0.001;//threshold for the error
-
+    double delta = 0.1; // Threshold for the error
     training obj = training();
 
-    // bool result = obj.train (nn1, 200000, v_input, v_label, delta);
-for(int i=0;i<30;i++){
-    bool result = obj.train(mdl._nn, _input, _label, delta);
-
-    if (result)
+    // Iterate over each dataset and train the model
+    for(int i=0;i<30;i++){    //epochs
+    for (auto &dataset : datasets)
     {
-        std::cout << "Training successful" << std::endl;
-    }
-    else
-    {
+        // Log weight before training
+        printf("Epoch %d - Before: i1 weight = %f\n", i, mdl.get_i1_weight());
+        bool result = obj.train(mdl._nn, dataset.input, dataset.label, delta);
 
-        std::cout << "Try again" << std::endl;
+        if (result)
+        {
+            std::cout << "Training successful" << std::endl;
+        }
+        else
+        {
+            std::cout << "Try again" << std::endl;
+        }
     }
     std::cout << "in iteration: " << i << std::endl;
 }
+
     return 0;
 }

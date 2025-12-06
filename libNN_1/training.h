@@ -99,13 +99,13 @@ class training
 			{	
 				if (step == 2000000) 
 				{
-					model.input::print ();
+					// model.input::print ();
 				
-					model.label::print ();
+					// model.label::print ();
 
-					model.output::print();
+					// model.output::print();
 					
-					model.error::print ();
+					// model.error::print ();
 					
 					//model.print_weight ();
 				
@@ -129,13 +129,13 @@ class training
 				++step;
 			}
 			
-			model.input::print ();
+			// model.input::print ();
 				
-			model.label::print ();
+			// model.label::print ();
 
-			model.output::print();
+			// model.output::print();
 
-			model.error::print ();
+			// model.error::print ();
 	
 			//model.print_weight ();
 			

@@ -7,6 +7,8 @@
 {
 public:
     network _nn = network();
+    // Add a pointer to track the i1 weight
+    double *i1_weight_ptr = nullptr;
 
     model()
     {
@@ -30,14 +32,16 @@ public:
         _nn.initialize(node_list);
 
         // A higher learning rate for a linear problem
-        _nn.set_learning_rate(0.0000001);
+        _nn.set_learning_rate(0.0001);
 
         // Connects 3 inputs to the 3 neurons of the first layer (Layer 0)
-        ip_to_nn i1 = {0, 0, 0, 1.0, false};
+        ip_to_nn i1 = {0, 0, 0, 1.0, true};
         ip_to_nn i2 = {0, 1, 0, -1.0, false};
         ip_to_nn i3 = {0, 2, 0, -1.0, false};
 
         _nn.add(i1);
+        // Store pointer to i1 weight (first weight in w_out after adding i1)
+        i1_weight_ptr = &(_nn.w_out.front().second);
         _nn.add(i2);
         _nn.add(i3);
 
@@ -95,6 +99,13 @@ public:
         _nn.add(o1);
         _nn.add(o2);
         _nn.add(o3);
+    }
+    // Add method to get current weight value
+    double get_i1_weight() const
+    {
+        if (i1_weight_ptr)
+            return *i1_weight_ptr;
+        return 0.0;
     }
 };
 
