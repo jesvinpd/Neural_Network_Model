@@ -3,6 +3,8 @@
 
 #include <list> 
 #include <iostream>
+#include <fstream>  // Add this line
+#include <string>   // Add this line
 
 #include "neuron.h"
 
@@ -230,6 +232,72 @@ class network : public neuron, public input, public output, public error, public
 				}	
 			}
 		}		
+
+		void save_weights_to_csv(const std::string& filename, unsigned int epoch) const
+		{
+			std::ofstream file;
+			
+			// Append mode - creates file if doesn't exist, appends if it does
+			if (epoch == 0)
+			{
+				file.open(filename, std::ios::out);  // Overwrite on first epoch
+				file << "Epoch,Layer,Node,WeightType,WeightIndex,WeightValue\n";
+			}
+			else
+			{
+				file.open(filename, std::ios::app);  // Append for subsequent epochs
+			}
+			
+			if (!file.is_open())
+			{
+				std::cerr << "Error: Could not open file " << filename << std::endl;
+				return;
+			}
+			
+			// Iterate through all layers
+			unsigned int layer_idx = 0;
+			for (auto l_id = nodes.begin(); l_id != nodes.end(); ++l_id, ++layer_idx)
+			{
+				unsigned int node_idx = 0;
+				// Iterate through all nodes in layer
+				for (auto n_id = l_id->begin(); n_id != l_id->end(); ++n_id, ++node_idx)
+				{
+					// Save input weights
+					unsigned int weight_idx = 0;
+					for (auto w_it = n_id->w_in.begin(); w_it != n_id->w_in.end(); ++w_it, ++weight_idx)
+					{
+						file << epoch << "," 
+							 << layer_idx << "," 
+							 << node_idx << ","
+							 << "input," 
+							 << weight_idx << ","
+							 << **w_it << "\n";
+					}
+					
+					// Save output weights
+					weight_idx = 0;
+					for (auto w_it = n_id->w_out.begin(); w_it != n_id->w_out.end(); ++w_it, ++weight_idx)
+					{
+						file << epoch << "," 
+							 << layer_idx << "," 
+							 << node_idx << ","
+							 << "output," 
+							 << weight_idx << ","
+							 << w_it->second << "\n";
+					}
+					
+					// Save bias
+					file << epoch << "," 
+						 << layer_idx << "," 
+						 << node_idx << ","
+						 << "bias," 
+						 << "0," 
+						 << n_id->b << "\n";
+				}
+			}
+			
+			file.close();
+		}
 };
 
 #endif

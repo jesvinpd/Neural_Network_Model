@@ -92,9 +92,9 @@ public:
         _nn.add(n1n28);
 
         // Connects the 3 neurons of the output layer (Layer 2) to the overall output
-        nn_to_op o1 = {2, 0, 0, 1.0, false};
-        nn_to_op o2 = {2, 1, 0, 1.0, false};
-        nn_to_op o3 = {2, 2, 0, 1.0, false};
+        nn_to_op o1 = {2, 0, 0, 1.0, true};
+        nn_to_op o2 = {2, 1, 0, 1.0, true};
+        nn_to_op o3 = {2, 2, 0, 1.0, true};
 
         _nn.add(o1);
         _nn.add(o2);
